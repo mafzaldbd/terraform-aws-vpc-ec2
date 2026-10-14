@@ -59,17 +59,17 @@ terraform destroy
 
 | `terraform apply` complete | Web page served by Nginx |
 |---|---|
-| ![Apply complete](docs/terraform-apply-complete.png) | ![Web page](docs/web-page.png) |
+| ![Apply complete](docs/terraform-apply-complete.PNG) | ![Web page](docs/web-page.PNG) |
 
 ### AWS console (ap-south-1)
 
 | EC2 instance | VPC |
 |---|---|
-| ![EC2](docs/ec2-console.png) | ![VPC](docs/vpc-console.png) |
+| ![EC2](docs/ec2-console.PNG) | ![VPC](docs/vpc-console.PNG) |
 
 | Subnets | Terraform plan (no changes) |
 |---|---|
-| ![Subnets](docs/subnets-console.png) | ![Plan](docs/terraform-plan.png) |
+| ![Subnets](docs/subnets-console.PNG) | ![Plan](docs/terraform-plan.PNG) |
 
 ## Cost
 
