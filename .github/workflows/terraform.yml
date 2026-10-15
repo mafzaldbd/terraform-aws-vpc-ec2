@@ -1,14 +1,13 @@
+git checkout add-ci
+cat > .github/workflows/terraform.yml << 'EOF'
 name: Terraform CI
-
-permissions:
-  id-token: write
-  contents: read
 
 on:
   pull_request:
     branches: [main]
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -50,3 +49,4 @@ jobs:
 
       - name: Plan
         run: terraform plan -var-file=envs/dev.tfvars -lock=false
+EOF
