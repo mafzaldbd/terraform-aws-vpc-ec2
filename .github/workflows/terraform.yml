@@ -1,5 +1,9 @@
 name: Terraform CI
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   pull_request:
     branches: [main]
@@ -25,3 +29,24 @@ jobs:
 
       - name: Validate
         run: terraform validate
+
+  plan:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ap-south-1
+
+      - name: Init
+        run: terraform init -backend-config="key=vpc-ec2/dev/terraform.tfstate"
+
+      - name: Plan
+        run: terraform plan -var-file=envs/dev.tfvars -lock=false
