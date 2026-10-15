@@ -1,7 +1,7 @@
 output "vpc_id" {
-  value = aws_vpc.main.id
+  value = module.vpc.vpc_id
 }
 
 output "web_url" {
-  value = "http://${aws_instance.web.public_ip}"
+  value = "http://${module.web.public_ip}"
 }

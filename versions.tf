@@ -9,8 +9,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket       = "afzal-tfstate-2026" # your bucket from Step 5
-    key          = "vpc-ec2/dev/terraform.tfstate"
+    bucket       = "afzal-tfstate-2026"
     region       = "ap-south-1"
     encrypt      = true
     use_lockfile = true
@@ -19,4 +18,12 @@ terraform {
 
 provider "aws" {
   region = var.region
+
+  default_tags {
+    tags = {
+      Project     = var.project
+      Environment = var.environment
+      ManagedBy   = "terraform"
+    }
+  }
 }
