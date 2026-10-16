@@ -39,7 +39,7 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: arn:aws:iam::034866041867:role/github-actions-terraform-plan
           aws-region: ap-south-1
 
       - name: Init
