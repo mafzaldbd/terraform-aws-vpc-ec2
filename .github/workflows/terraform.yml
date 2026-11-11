@@ -42,7 +42,7 @@ jobs:
         with:
           scan-type: config
           scan-ref: .
-          severity: HIGH,CRITICAL
+          severity: HIGH,CRITICAL 
           exit-code: "0"
           version: v0.69.3
 

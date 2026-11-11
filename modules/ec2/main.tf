@@ -91,6 +91,14 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.web.id]
   iam_instance_profile   = aws_iam_instance_profile.web.name
 
+  metadata_options {
+    http_tokens = "required"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
+
   user_data_replace_on_change = true
 
   user_data = <<-EOF
