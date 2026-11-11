@@ -103,11 +103,24 @@ Run `terraform init -reconfigure` again whenever you switch environments.
 A GitHub Actions workflow runs on every pull request to `main`:
 
 1. `terraform fmt -check` and `terraform validate`
-2. `terraform plan` against the dev environment
+2. TFLint and a Trivy configuration scan (report-only)
+3. `terraform plan` against the dev environment
 
 AWS access uses GitHub OIDC with a short-lived, read-only IAM role, so no AWS keys are stored in GitHub.
 
 ![CI checks](docs/ci-checks.png)
+
+## Security scanning and known trade-offs
+
+Every pull request runs TFLint (provider and version rules) and a Trivy configuration scan for HIGH and CRITICAL findings. The Trivy step is report-only. The findings below are deliberate choices for a low-cost demo environment, and each has a production fix:
+
+| Finding | Why it is accepted here | Production fix |
+|---|---|---|
+| AWS-0104: web security group allows all outbound traffic | The instance needs HTTPS access to install Docker and reach ECR and Secrets Manager. VPC endpoints would add hourly cost. | VPC endpoints for ECR, S3, and Secrets Manager, plus restricted egress rules |
+| AWS-0031: ECR image tags are mutable | The pipeline currently pushes the moving `latest` tag. | Deploy by commit-SHA tag only, then set `image_tag_mutability = "IMMUTABLE"` |
+| AWS-0164: public subnet assigns public IPs | The web server is reachable directly, with no load balancer or NAT gateway, to keep cost low. | Instances in private subnets behind an application load balancer |
+
+Issues found by earlier runs were fixed: IMDSv2 is required on the instance, and its root volume is encrypted.
 
 ## Stage 1: ECR and RDS
 

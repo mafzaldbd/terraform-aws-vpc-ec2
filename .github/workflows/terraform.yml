@@ -27,6 +27,25 @@ jobs:
       - name: Validate
         run: terraform validate
 
+      - name: Set up TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: TFLint
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          tflint --init
+          tflint --recursive
+
+      - name: Trivy security scan (report only)
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: HIGH,CRITICAL 
+          exit-code: "0"
+          version: v0.69.3
+
   plan:
     needs: validate
     runs-on: ubuntu-latest
